@@ -2,13 +2,12 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
  <modelVersion>4.0.0</modelVersion>
 
- <groupId>ru.biosoft.graphics</groupId>
- <artifactId>core</artifactId>
+ <artifactId>beaninfo</artifactId>
  <version>2.0.0</version>
  <packaging>jar</packaging>
 
- <name>Graphics core</name>
- <description>Graphics primitives to build complex views - core classes.</description>
+ <name>Graphics Bean Infos</name>
+ <description>BeanInfo and editor classes for graphics beans (Pen, Brush, ColorFont).</description>
 
  <parent>
   <groupId>ru.biosoft</groupId>
@@ -19,9 +18,15 @@
  <dependencies>
 
   <dependency>
-   <groupId>org.json</groupId>
-   <artifactId>json</artifactId>
-   <version>20170516</version>
+   <groupId>ru.biosoft.graphics</groupId>
+   <artifactId>core</artifactId>
+   <version>2.0.0</version>
+  </dependency>
+
+  <dependency>
+   <groupId>com.developmentontheedge</groupId>
+   <artifactId>beans</artifactId>
+   <version>3.0.1</version>
   </dependency>
 
   <dependency>
