@@ -11,7 +11,7 @@
 
  <modules>
   <module>core</module>
-  <!--module>beaninfo</module-->
+  <module>editor</module>
  </modules>
 
  <properties>
