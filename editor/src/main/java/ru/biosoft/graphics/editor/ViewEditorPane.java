@@ -11,9 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -25,8 +29,6 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
-import ru.biosoft.access.DataElement;
-import ru.biosoft.access.exception.BiosoftInternalException;
 import ru.biosoft.graphics.ArrowView;
 import ru.biosoft.graphics.BoxView;
 import ru.biosoft.graphics.CompositeView;
@@ -38,6 +40,7 @@ import ru.biosoft.graphics.View;
 import com.developmentontheedge.beans.undo.Transactable;
 import com.developmentontheedge.beans.undo.TransactionEvent;
 import com.developmentontheedge.beans.undo.TransactionListener;
+
 
 /**
  * These a general class to edit any CompositeView
@@ -215,12 +218,21 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
      */
     protected String getSelectionName()
     {
-        return IntStreamEx.range( selectionManager.getSelectedViewCount() )
-            .mapToObj( selectionManager::getSelectedView )
-            .map( View::getModel )
-            .select( DataElement.class )
-            .map( DataElement::getName )
-            .collect( Joining.with( ", " ).maxChars( 50 ).cutAtWord() );
+    	List<String> names = new ArrayList<>();
+    	for( int i = 0; i < selectionManager.getSelectedViewCount(); i++ )
+    	{
+    		View view = selectionManager.getSelectedView(i);
+    		if( view.getModel() instanceof Double )
+    		{
+    			names.add(((DataElement)view.getModel()).getName());
+    			if(names.size() >= 3)
+    			{
+    				break;
+    			}
+    		}
+    	}
+    	String selectionName = String.join(", ", names);
+    	return selectionName;
     }
 
     /** Change size for the selected (one) entity. */
@@ -816,7 +828,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
                 rect = new Rectangle(initialRect.x, initialRect.y, initialRect.width - dx, initialRect.height - dy);
                 break;
             default:
-                throw new BiosoftInternalException( "getResizingSelectionRect called with invalid resizingDirection=" + resizingDirection );
+                throw new RuntimeException( "getResizingSelectionRect called with invalid resizingDirection=" + resizingDirection );
         }
         if( rect.width <= 0 )
         {
