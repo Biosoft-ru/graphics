@@ -7,6 +7,8 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.net.URL;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -18,7 +20,9 @@ import javax.swing.ImageIcon;
  */
 public class InsertAction extends AbstractAction
 {
-    /** Type of element to be created and inserted during this action processing.*/
+	private final static Logger log = Logger.getLogger(InsertAction.class.getName());
+	
+	/** Type of element to be created and inserted during this action processing.*/
     public static final String TYPE = "type";
 
     /** Initialise icon from the specified image file. */
@@ -33,7 +37,7 @@ public class InsertAction extends AbstractAction
             }
             catch( Exception e )
             {
-                log.error("Icon " + imageFile + " initialization error");
+                log.warning("Icon " + imageFile + " initialization error");
             }
         }
 
@@ -108,7 +112,7 @@ public class InsertAction extends AbstractAction
         }
         catch( Throwable t )
         {
-            log.error("Can not initialise InsertAction for class " + type, t);
+            log.log(Level.WARNING, "Can not initialise InsertAction for class " + type, t);
         }
     }
 
