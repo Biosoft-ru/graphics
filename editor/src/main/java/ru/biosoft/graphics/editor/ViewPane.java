@@ -28,6 +28,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import com.developmentontheedge.beans.ActionsProvider;
+
 import ru.biosoft.graphics.CompositeView;
 import ru.biosoft.graphics.View;
 import ru.biosoft.graphics.editor.GridOptions.GridStyle;

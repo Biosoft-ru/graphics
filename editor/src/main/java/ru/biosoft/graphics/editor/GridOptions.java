@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.biosoft.util.WeakPropertyChangeForwarder;
+import com.developmentontheedge.beans.WeakPropertyChangeForwarder;
 
 import com.developmentontheedge.beans.DynamicProperty;
 import com.developmentontheedge.beans.Option;
