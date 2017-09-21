@@ -2,12 +2,11 @@ package ru.biosoft.graphics.editor;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-
-import one.util.streamex.StreamEx;
 
 import ru.biosoft.graphics.ArrowView;
 import ru.biosoft.graphics.View;
@@ -150,7 +149,16 @@ public class SelectionManager extends ViewPaneAdapter implements ViewPaneLayer
             selectedViews.clear();
             selectedModels.clear();
         }
-        return StreamEx.of( models ).flatMap( model -> Arrays.stream( selectModel( model, false ) ) ).toArray( View[]::new );
+        List<View> allViews = new ArrayList<View>();
+        for( Object model : models )
+        {
+            View[] views = selectModel(model, false);
+            for( View view : views )
+            {
+                allViews.add(view);
+            }
+        }
+        return allViews.toArray(new View[allViews.size()]);
     }
 
     protected ViewEditorHelper helper = null;
