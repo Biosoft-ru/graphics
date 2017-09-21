@@ -2,13 +2,13 @@ package ru.biosoft.graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import com.developmentontheedge.beans.annot.PropertyDescription;
 import com.developmentontheedge.beans.annot.PropertyName;
@@ -272,35 +272,16 @@ public class PenEditor extends TextButtonEditor
     @Override
     protected void buttonPressed()
     {
-        final PenDialog dialog = new PenDialog((Pen)getValue());
-        if( dialog.doModal() )
-        {
-            Pen pen = dialog.getPen();
-            setValue(pen);
-        }
+    	Pen pen = (Pen) getValue();	
+		PenInfo penInfo = new PenInfo(pen.clone());
+		PropertyInspector inspector = new PropertyInspector();
+        inspector.explore(penInfo);
+        //TODO: set parent to dialog
+        int result = JOptionPane.showOptionDialog(null, inspector, "Line spec settings:",
+		   JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+		if(result == JOptionPane.OK_OPTION)
+		{
+			setValue(penInfo.getPen());
+		}
     }
-
-    
-    private static class PenDialog extends OkCancelDialog
-    {
-        PenInfo penInfo;
-        
-        public PenDialog(Pen pen)
-        {
-            super(Application.getApplicationFrame(), "Line spec settings:");
-            this.penInfo = new PenInfo(pen.clone());
-            PropertyInspector inspector = new PropertyInspector();
-            inspector.explore(penInfo);
-            add(inspector);
-            setPreferredSize(new Dimension(480, 200));
-            setResizable(false);
-
-        }
-
-        public Pen getPen()
-        {
-            return penInfo.getPen();
-        }
-    }
-
 }
