@@ -2,19 +2,22 @@ package ru.biosoft.graphics.editor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.biosoft.util.WeakPropertyChangeForwarder;
-
 import com.developmentontheedge.beans.DynamicProperty;
 import com.developmentontheedge.beans.Option;
 import com.developmentontheedge.beans.Preferences;
+import com.developmentontheedge.beans.WeakPropertyChangeForwarder;
 
 public class GridOptions extends Option implements PropertyChangeListener
 {
-    public static final String GRID_OPTIONS = "GridOptions";
+	private final static Logger logger = Logger.getLogger(GridOptions.class.getName());
+	
+	public static final String GRID_OPTIONS = "GridOptions";
 
     public GridOptions()
     {
@@ -59,7 +62,7 @@ public class GridOptions extends Option implements PropertyChangeListener
         }
         catch( Exception e )
         {
-            log.error("Can not create grid preferences", e);
+            logger.log(Level.WARNING, "Can not create grid preferences", e);
         }
         return preferences;
     }
@@ -100,7 +103,7 @@ public class GridOptions extends Option implements PropertyChangeListener
         boolean oldValue = this.useDefault;
         this.useDefault = useDefault;
 
-        Preferences preferences = Application.getPreferences();
+        Preferences preferences = (Preferences) sun.awt.AppContext.getAppContext().get(Preferences.class);
         if( preferences != null )
         {
             Preferences defaultInstance = (Preferences)preferences.getValue(GRID_OPTIONS);
@@ -121,7 +124,7 @@ public class GridOptions extends Option implements PropertyChangeListener
                     }
                     catch( Exception e )
                     {
-                        log.error("Can not create grid properties", e);
+                    	logger.log(Level.WARNING, "Can not create grid properties", e);
                     }
                 }
                 if(defaultInstance != null)
