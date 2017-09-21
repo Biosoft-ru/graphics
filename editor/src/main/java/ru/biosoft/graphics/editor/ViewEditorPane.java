@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -224,7 +221,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     		View view = selectionManager.getSelectedView(i);
     		if( view.getModel() instanceof Double )
     		{
-    			names.add(((DataElement)view.getModel()).getName());
+    			names.add(getName(view.getModel()));
     			if(names.size() >= 3)
     			{
     				break;
@@ -233,6 +230,19 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     	}
     	String selectionName = String.join(", ", names);
     	return selectionName;
+    }
+    
+    protected static String getName(Object obj)
+    {
+    	String name = null;
+    	try
+        {
+    		name = (String) obj.getClass().getMethod( "getName" ).invoke(obj);
+        }
+    	catch( Exception t )
+    	{
+        }
+    	return name == null ? obj.toString() : name; 
     }
 
     /** Change size for the selected (one) entity. */
@@ -257,7 +267,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
      */
     synchronized public void add(Object obj, Point point)
     {
-        startTransaction("Add "+((obj instanceof DataElement)?((DataElement)obj).getName():""));
+    	startTransaction("Add "+ getName(obj));
         helper.add(obj, point);
         completeTransaction();
     }
