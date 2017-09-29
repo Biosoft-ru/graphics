@@ -1,5 +1,5 @@
 
-package ru.biosoft.graphics;
+package ru.biosoft.graphics.editor;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 
 import com.developmentontheedge.beans.editors.ColorComboBox;
 import com.developmentontheedge.beans.editors.ColorEditor;
+
+import ru.biosoft.graphics.Brush;
 
 public class BrushEditor extends ColorEditor
 {

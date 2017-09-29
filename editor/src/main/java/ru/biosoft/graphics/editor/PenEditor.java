@@ -1,4 +1,4 @@
-package ru.biosoft.graphics;
+package ru.biosoft.graphics.editor;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -16,6 +16,9 @@ import com.developmentontheedge.beans.BeanInfoEx;
 import com.developmentontheedge.beans.Option;
 import com.developmentontheedge.beans.editors.TextButtonEditor;
 import com.developmentontheedge.beans.swing.PropertyInspector;
+
+import ru.biosoft.graphics.ComplexTextView;
+import ru.biosoft.graphics.Pen;
 
 public class PenEditor extends TextButtonEditor
 {

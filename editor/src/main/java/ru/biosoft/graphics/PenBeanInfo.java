@@ -1,9 +1,9 @@
 package ru.biosoft.graphics;
 
-import ru.biosoft.graphics.PenEditor.PenInfo;
-
 import com.developmentontheedge.beans.BeanInfoEx;
 import com.developmentontheedge.beans.editors.StringTagEditor;
+
+import ru.biosoft.graphics.editor.PenEditor.PenInfo;
 
 public class PenBeanInfo extends BeanInfoEx
 {
