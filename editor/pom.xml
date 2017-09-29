@@ -95,6 +95,9 @@
                <Import-Package>
                    ru.biosoft.graphics, ru.biosoft.graphics.font, *;resolution:=optional
                </Import-Package>
+               <Export-Package>
+               		ru.biosoft.graphics,ru.biosoft.graphics.editor,ru.biosoft.graphics.font
+               </Export-Package>
            </instructions>
        </configuration>
       <executions>
