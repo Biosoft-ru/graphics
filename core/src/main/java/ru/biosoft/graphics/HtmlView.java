@@ -120,4 +120,14 @@ public class HtmlView extends View
         result.put("height", shape.getBounds().height);
         return result;
     }
+    
+    public ColorFont getColorFont()
+    {
+    	return cf;
+    }
+    
+    public String getText()
+    {
+    	return text;
+    }
 }
