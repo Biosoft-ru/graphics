@@ -279,9 +279,9 @@ public class PenEditor extends TextButtonEditor
 		PenInfo penInfo = new PenInfo(pen.clone());
 		PropertyInspector inspector = new PropertyInspector();
         inspector.explore(penInfo);
-        //TODO: set parent to dialog
-        int result = JOptionPane.showOptionDialog(null, inspector, "Line spec settings:",
-		   JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+        int result = JOptionPane.showOptionDialog(JOptionPane.getRootFrame(), inspector, "Line spec settings:",
+		                                          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 		if(result == JOptionPane.OK_OPTION)
 		{
 			setValue(penInfo.getPen());
