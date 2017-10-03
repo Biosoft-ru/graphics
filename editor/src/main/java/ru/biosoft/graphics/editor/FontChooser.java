@@ -1,4 +1,4 @@
-package ru.biosoft.graphics.font;
+package ru.biosoft.graphics.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -42,6 +42,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.developmentontheedge.beans.editors.ColorComboBox;
+
+import ru.biosoft.graphics.font.ColorFont;
 
 @SuppressWarnings ( "serial" )
 public class FontChooser extends JComponent

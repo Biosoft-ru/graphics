@@ -1,4 +1,4 @@
-package ru.biosoft.graphics.font;
+package ru.biosoft.graphics.editor;
 
 
 import java.awt.Color;
@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import com.developmentontheedge.beans.editors.CustomEditorSupport;
+
+import ru.biosoft.graphics.font.ColorFont;
 
 public class FontEditor extends CustomEditorSupport
 {
