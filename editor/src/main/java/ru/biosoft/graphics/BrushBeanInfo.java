@@ -5,8 +5,6 @@ import java.beans.DefaultPersistenceDelegate;
 
 import com.developmentontheedge.beans.BeanInfoEx;
 
-import ru.biosoft.graphics.editor.BrushEditor;
-
 public class BrushBeanInfo extends BeanInfoEx
 {
     public BrushBeanInfo()

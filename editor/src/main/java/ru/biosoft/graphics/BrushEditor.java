@@ -1,5 +1,5 @@
 
-package ru.biosoft.graphics.editor;
+package ru.biosoft.graphics;
 
 import java.awt.Color;
 import java.awt.Component;
