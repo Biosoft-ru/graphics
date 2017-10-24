@@ -3,14 +3,12 @@ package ru.biosoft.graphics;
 import com.developmentontheedge.beans.BeanInfoEx;
 import com.developmentontheedge.beans.editors.StringTagEditor;
 
-import ru.biosoft.graphics.editor.PenEditor.PenInfo;
-
 public class PenBeanInfo extends BeanInfoEx
 {
     public PenBeanInfo()
     {
         super(Pen.class, "ru.biosoft.graphics.PenMessageBundle");
-        
+
         beanDescriptor.setDisplayName(getResourceString("DISPLAY_NAME"));
         beanDescriptor.setShortDescription(getResourceString("SHORT_DESCRIPTION"));
     }
@@ -21,9 +19,9 @@ public class PenBeanInfo extends BeanInfoEx
         property( "color" ).title( "COLOR_NAME" ).description( "COLOR_DESCRIPTION" ).add();
         property( "width" ).editor( PenWidthSelector.class ).title( "WIDTH_NAME" ).description( "WIDTH_DESCRIPTION" ).add();
         property( "stroke" ).hidden().title( "STROKE_NAME" ).description( "STROKE_DESCRIPTION" ).add();
-        property( "strokeAsString" ).tags( PenInfo.getAvailableStrokes() ).title( "STROKE_NAME" ).description( "STROKE_DESCRIPTION" ).add();
+        property( "strokeAsString" ).tags( Pen.getAvailableStrokes() ).title( "STROKE_NAME" ).description( "STROKE_DESCRIPTION" ).add();
     }
-    
+
     public static class PenWidthSelector extends StringTagEditor
     {
         @Override
@@ -51,4 +49,5 @@ public class PenBeanInfo extends BeanInfoEx
             return new String[] {"0.0", "0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "4.0", "5.0"};
         }
     }
+
 }

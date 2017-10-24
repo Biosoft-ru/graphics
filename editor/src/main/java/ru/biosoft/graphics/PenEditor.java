@@ -1,4 +1,4 @@
-package ru.biosoft.graphics.editor;
+package ru.biosoft.graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -50,7 +50,7 @@ public class PenEditor extends TextButtonEditor
             put(DASH_DOT, "-.");
         }
     };
-    
+
     public PenEditor()
     {
         textField.setEditable(true);
@@ -101,7 +101,7 @@ public class PenEditor extends TextButtonEditor
     {
         if ("Auto".equals(str))
             return null;
-        
+
         try
         {
             String[] arr = ComplexTextView.split(str, ';');
@@ -118,7 +118,7 @@ public class PenEditor extends TextButtonEditor
 
             if( arr.length == 5 && !arr[4].isEmpty() )
             {
-                pen.setStroke(createBasicStroke(getArrayByPattern(arr[4])));
+                pen.setStroke( Pen.createBasicStroke( getArrayByPattern( arr[4] ) ) );
             }
             pen.setWidth(width);
             return pen;
@@ -132,13 +132,13 @@ public class PenEditor extends TextButtonEditor
     private String getPatternByArray(float[] array)
     {
     	//return StreamEx.ofValues(arrayToPattern, val -> Arrays.equals( array, val )).findAny().orElse("~");
-    	
+
     	for(float[] val : arrayToPattern.keySet() )
     	{
     		if( Arrays.equals(val, array) )
     			return arrayToPattern.get(val);
     	}
-    	
+
     	return "~";
     }
 
@@ -168,13 +168,13 @@ public class PenEditor extends TextButtonEditor
             return nameToArray.keySet().toArray(new String[nameToArray.size()]);
         }
 
-        protected PenInfo(Pen pen)
+        public PenInfo(Pen pen)
         {
             this.color = pen.getColor();
             this.width = (float)pen.getWidth();
-            this.stroke = getNameByStroke(pen.getStroke());
+            this.stroke = Pen.getNameByStroke( pen.getStroke() );
         }
-         
+
         @PropertyName("Color")
         @PropertyDescription("Color of the pen.")
         public Color getColor()
@@ -215,33 +215,11 @@ public class PenEditor extends TextButtonEditor
             firePropertyChange("stroke", oldValue, stroke);
         }
 
-        public static String getNameByStroke(BasicStroke basicStroke)
-        {
-            float[] array = basicStroke.getDashArray();
-            
-            for(String name : nameToArray.keySet() ) 
-            {
-            	if( Arrays.equals(array, nameToArray.get(name)) )
-            		return name;
-            }
-
-            return "Custom";
-       		//StreamEx.ofKeys(nameToArray, val -> Arrays.equals( array, val )).findAny().orElse("Custom");
-        }
-        
-        public static BasicStroke getStrokeByName(BasicStroke oldStroke, String name)
-        {
-            if(oldStroke == null)
-                return createBasicStroke( nameToArray.get( name ) );
-            
-            return new BasicStroke(oldStroke.getLineWidth(), oldStroke.getEndCap(), oldStroke.getLineJoin(), oldStroke.getMiterLimit(), nameToArray.get(name), 0);
-        }
-
         public Pen getPen()
         {
             Pen pen = new Pen();
             pen.setColor(color);
-            pen.setStroke(getStrokeByName( null, stroke ));
+            pen.setStroke( Pen.getStrokeByName( null, stroke ) );
             pen.setWidth(width);
             return pen;
         }
@@ -259,13 +237,8 @@ public class PenEditor extends TextButtonEditor
         {
             add("color");
             add("width");
-            addWithTags("stroke", PenInfo.getAvailableStrokes());
+            addWithTags( "stroke", Pen.getAvailableStrokes() );
         }
-    }
-
-    public static BasicStroke createBasicStroke(float[] array)
-    {
-        return new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10, array, 0);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -275,7 +248,7 @@ public class PenEditor extends TextButtonEditor
     @Override
     protected void buttonPressed()
     {
-    	Pen pen = (Pen) getValue();	
+    	Pen pen = (Pen) getValue();
 		PenInfo penInfo = new PenInfo(pen.clone());
 		PropertyInspector inspector = new PropertyInspector();
         inspector.explore(penInfo);
