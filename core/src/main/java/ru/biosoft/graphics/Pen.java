@@ -4,6 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import org.json.JSONArray;
@@ -49,7 +52,7 @@ public class Pen
         Pen p = (Pen)obj;
         return p.width == width && Objects.equals( p.stroke, stroke ) && Objects.equals( p.color, color );
     }
-    
+
     @Override
     public Pen clone()
     {
@@ -67,7 +70,7 @@ public class Pen
     ////////////////////////////////////////////////////////////////////////////
     // Properties
     //
-    
+
     protected double width;
     public double getWidth()
     {
@@ -125,12 +128,19 @@ public class Pen
         firePropertyChange("stroke", oldValue, stroke);
     }
 
+    public String getStrokeAsString()
+    {
+        return getNameByStroke( stroke );
+    }
 
+    public void setStrokeAsString(String stroke)
+    {
+        setStroke( getStrokeByName( this.stroke, stroke ) );
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // JSON
     //
-
     public static Pen createInstance(String str)
     {
         Pen pen = new Pen();
@@ -158,7 +168,7 @@ public class Pen
         }
     }
 
-    
+
     JSONObject json = null;
     public JSONObject toJSON() throws JSONException
     {
@@ -240,16 +250,66 @@ public class Pen
     }
 
     // /////////////////////////////////////////////////////////////////////////
+    // Stroke processing
+    //
+    final static float[] SOLID = null;
+    final static float[] DASHED = new float[] {9, 6};
+    final static float[] DOT = new float[] {2, 9};
+    final static float[] DASH_DOT = new float[] {9, 3, 2, 3};
+
+    private static HashMap<String, float[]> nameToArray = new LinkedHashMap<String, float[]>()
+    {
+        {
+            put( "Solid", SOLID );
+            put( "Dashed", DASHED );
+            put( "Dot", DOT );
+            put( "Dash-dot", DASH_DOT );
+        }
+    };
+
+    public static String[] getAvailableStrokes()
+    {
+        return nameToArray.keySet().toArray( new String[nameToArray.size()] );
+    }
+
+    public static String getNameByStroke(BasicStroke basicStroke)
+    {
+        float[] array = basicStroke.getDashArray();
+
+        for( String name : nameToArray.keySet() )
+        {
+            if( Arrays.equals( array, nameToArray.get( name ) ) )
+                return name;
+        }
+
+        return "Custom";
+    }
+
+    public static BasicStroke getStrokeByName(BasicStroke oldStroke, String name)
+    {
+        if( oldStroke == null )
+            return createBasicStroke( nameToArray.get( name ) );
+
+        return new BasicStroke( oldStroke.getLineWidth(), oldStroke.getEndCap(), oldStroke.getLineJoin(), oldStroke.getMiterLimit(),
+                nameToArray.get( name ), 0 );
+    }
+
+    public static BasicStroke createBasicStroke(float[] array)
+    {
+        return new BasicStroke( 1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10, array, 0 );
+    }
+
+    // /////////////////////////////////////////////////////////////////////////
     // Listeners
     //
-    
+
 	protected PropertyChangeSupport pcSupport = null;
 
 	public void addPropertyChangeListener(PropertyChangeListener listener)
     {
         if(pcSupport == null)
             pcSupport = new PropertyChangeSupport(this);
-    
+
         pcSupport.addPropertyChangeListener(listener);
     }
 
@@ -257,7 +317,7 @@ public class Pen
     {
         if(pcSupport == null)
             pcSupport = new PropertyChangeSupport(this);
-    
+
         pcSupport.addPropertyChangeListener(propertyName, listener);
     }
 
