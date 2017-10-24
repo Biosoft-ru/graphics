@@ -20,6 +20,16 @@ public class ImageView extends View implements ImageObserver
     protected Image image;
     protected String path;
 
+    public String getPath()
+    {
+        return path;
+    }
+
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+
     ////////////////////////////////////////
     // Constructors
     //
@@ -43,7 +53,7 @@ public class ImageView extends View implements ImageObserver
     {
         this(image, x, y, 0, 0);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // Utility methods
     //
