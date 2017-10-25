@@ -2,18 +2,13 @@ package ru.biosoft.graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.developmentontheedge.beans.annot.PropertyDescription;
-import com.developmentontheedge.beans.annot.PropertyName;
-import com.developmentontheedge.beans.BeanInfoEx;
-import com.developmentontheedge.beans.Option;
 import com.developmentontheedge.beans.editors.TextButtonEditor;
 import com.developmentontheedge.beans.swing.PropertyInspector;
 
@@ -131,114 +126,17 @@ public class PenEditor extends TextButtonEditor
 
     private String getPatternByArray(float[] array)
     {
-    	//return StreamEx.ofValues(arrayToPattern, val -> Arrays.equals( array, val )).findAny().orElse("~");
-
     	for(float[] val : arrayToPattern.keySet() )
     	{
     		if( Arrays.equals(val, array) )
     			return arrayToPattern.get(val);
     	}
-
     	return "~";
     }
 
     private float[] getArrayByPattern(String pattern)
     {
         return patternToArray.getOrDefault(pattern, SOLID);
-    }
-
-    public static class PenInfo extends Option
-    {
-        String stroke;
-        float width;
-        Color color;
-
-        private static HashMap<String, float[]> nameToArray = new LinkedHashMap<String, float[]>()
-        {
-            {
-                put("Solid",    SOLID);
-                put("Dashed",   DASHED);
-                put("Dot", 		DOT);
-                put("Dash-dot", DASH_DOT);
-            }
-        };
-
-        public static String[] getAvailableStrokes()
-        {
-            return nameToArray.keySet().toArray(new String[nameToArray.size()]);
-        }
-
-        public PenInfo(Pen pen)
-        {
-            this.color = pen.getColor();
-            this.width = (float)pen.getWidth();
-            this.stroke = Pen.getNameByStroke( pen.getStroke() );
-        }
-
-        @PropertyName("Color")
-        @PropertyDescription("Color of the pen.")
-        public Color getColor()
-        {
-            return color;
-        }
-        public void setColor(Color color)
-        {
-            Color oldValue = this.color;
-            this.color = color;
-            firePropertyChange("color", oldValue, color);
-        }
-
-        @PropertyName("Width")
-        @PropertyDescription("Width of the pen.")
-        public float getWidth()
-        {
-            return width;
-        }
-
-        public void setWidth(float width)
-        {
-            float oldValue = this.width;
-            this.width = width;
-            firePropertyChange( "width", Float.valueOf( oldValue ), Float.valueOf( width ) );
-        }
-
-        @PropertyName("Stroke")
-        @PropertyDescription("Stroke of the pen.")
-        public String getStroke()
-        {
-            return stroke;
-        }
-        public void setStroke(String stroke)
-        {
-            String oldValue = this.stroke;
-            this.stroke = stroke;
-            firePropertyChange("stroke", oldValue, stroke);
-        }
-
-        public Pen getPen()
-        {
-            Pen pen = new Pen();
-            pen.setColor(color);
-            pen.setStroke( Pen.getStrokeByName( null, stroke ) );
-            pen.setWidth(width);
-            return pen;
-        }
-    }
-
-    public static class PenInfoBeanInfo extends BeanInfoEx
-    {
-        public PenInfoBeanInfo()
-        {
-            super(PenInfo.class);
-        }
-
-        @Override
-        public void initProperties() throws Exception
-        {
-            add("color");
-            add("width");
-            addWithTags( "stroke", Pen.getAvailableStrokes() );
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -249,15 +147,14 @@ public class PenEditor extends TextButtonEditor
     protected void buttonPressed()
     {
     	Pen pen = (Pen) getValue();
-		PenInfo penInfo = new PenInfo(pen.clone());
 		PropertyInspector inspector = new PropertyInspector();
-        inspector.explore(penInfo);
-
+        inspector.explore( pen );
+        inspector.setPreferredSize( new Dimension( 480, 200 ) );
         int result = JOptionPane.showOptionDialog(JOptionPane.getRootFrame(), inspector, "Line spec settings:",
 		                                          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 		if(result == JOptionPane.OK_OPTION)
 		{
-			setValue(penInfo.getPen());
+            setValue( pen );
 		}
     }
 }
