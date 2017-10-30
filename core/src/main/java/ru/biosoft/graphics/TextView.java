@@ -154,7 +154,7 @@ public class TextView extends View
         result.put("width",  rect.width);
         result.put("height", rect.height);
         result.put("rect.y", rect.y);
-        
+
         return result;
     }
 
@@ -175,9 +175,10 @@ public class TextView extends View
             rect.width  = from.getInt("width");
             rect.height = from.getInt("height");
             rect.y      = from.getInt("rect.y");
-            
+            yPosRatio = (double) ( y - rect.y ) / rect.height;
+
         }
-        catch(JSONException e) 
+        catch(JSONException e)
         {}
     }
 }
