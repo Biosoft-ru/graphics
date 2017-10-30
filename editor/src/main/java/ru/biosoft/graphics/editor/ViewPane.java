@@ -15,7 +15,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
@@ -369,7 +368,7 @@ public class ViewPane extends JPanel implements MouseListener, MouseMotionListen
 
     private Collection<View> traceFor(View v)
     {
-        HashSet<View> views = new HashSet<View>();
+        List<View> views = new ArrayList<>();
         if( v.isActive() && v.getModel() == findModel )
         {
             views.add(v);
