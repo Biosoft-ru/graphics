@@ -1,5 +1,6 @@
 package ru.biosoft.graphics;
 
+import java.awt.Canvas;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -38,7 +39,7 @@ public class TextView extends View
         this.alignment = alignment;
         this.font = font;
 
-        initSize(graphics);
+        initSize( graphics.getFontMetrics( font.getFont() ) );
     }
 
     public TextView(String text, ColorFont font, Graphics graphics)
@@ -46,9 +47,8 @@ public class TextView extends View
         this(text, new Point(0, 0), LEFT | BASELINE, font, graphics);
     }
 
-    protected void initSize(Graphics graphics)
+    protected void initSize(FontMetrics fm)
     {
-        FontMetrics fm = graphics.getFontMetrics(font.getFont());
         rect.width = fm.stringWidth(text);
         rect.height = fm.getHeight();
 
@@ -179,6 +179,29 @@ public class TextView extends View
 
         }
         catch(JSONException e)
-        {}
+        {
+            initFromJSONOld( from );
+        }
+    }
+
+    @Deprecated
+    protected void initFromJSONOld(JSONObject from)
+    {
+        try
+        {
+            text = from.getString( "text" );
+            font = new ColorFont( from.getJSONObject( "font" ).toString() );
+            alignment = BASELINE | LEFT;
+            rect.x = from.getInt( "x" );
+            y = from.getInt( "y" );
+            at.scale( from.optDouble( "scaleX", 1.0 ), from.optDouble( "scaleY", 1.0 ) );
+
+            Canvas c = new Canvas();
+            FontMetrics fm = c.getFontMetrics( font.getFont() );
+            initSize( fm );
+        }
+        catch( JSONException e )
+        {
+        }
     }
 }
