@@ -1,51 +1,18 @@
 package ru.biosoft.graphics;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.developmentontheedge.beans.editors.TextButtonEditor;
 import com.developmentontheedge.beans.swing.PropertyInspector;
 
 import ru.biosoft.graphics.ComplexTextView;
 import ru.biosoft.graphics.Pen;
 
-public class PenEditor extends TextButtonEditor
+public class PenEditor extends StrokeTextEditor
 {
-    final static float[] SOLID    = null;
-    final static float[] DASHED   = new float[] {9, 6};
-    final static float[] DOT      = new float[] {2, 9};
-    final static float[] DASH_DOT = new float[] {9, 3, 2, 3};
-
-    private static HashMap<String, float[]> patternToArray = new HashMap<String, float[]>()
-    {
-        {
-            put("-",   SOLID);
-            put("--",  DASHED);
-            put("---", DASHED);
-            put("..",  DOT);
-            put(".",   DOT);
-            put(":",   DOT);
-            put("-.",  DASH_DOT);
-            put("-.-", DASH_DOT);
-        }
-    };
-
-    private static HashMap<float[], String> arrayToPattern = new HashMap<float[], String>()
-    {
-        {
-            put(SOLID,    "-");
-            put(DASHED,   "--");
-            put(DOT,      ":");
-            put(DASH_DOT, "-.");
-        }
-    };
-
     public PenEditor()
     {
         textField.setEditable(true);
@@ -59,7 +26,7 @@ public class PenEditor extends TextButtonEditor
     public void setValue(Object value)
     {
         Pen pen = (Pen)value;
-        textField.setText(getUserString(pen));
+        textField.setText(getUserPenString(pen));
         firePropertyChange();
     }
 
@@ -76,20 +43,15 @@ public class PenEditor extends TextButtonEditor
         }
     }
 
-    private String getUserString(Pen pen)
+    private String getUserPenString(Pen pen)
     {
         if (pen == null)
             return "Auto";
         if( pen.getColor() == null )
-            return pen.getWidth() + ";" + getUserString(pen.getStroke());
+            return pen.getWidth() + ";" + getUserStrokeString(pen.getStroke());
         Color color = pen.getColor();
         return pen.getWidth() + ";" + color.getRed() + ";" + color.getGreen() + ";" + color.getBlue() + ";"
-                + getUserString(pen.getStroke());
-    }
-
-    private String getUserString(BasicStroke stroke)
-    {
-        return this.getPatternByArray(stroke.getDashArray());
+                + getUserStrokeString(pen.getStroke());
     }
 
     private Pen getPenByUserString(String str)
@@ -122,21 +84,6 @@ public class PenEditor extends TextButtonEditor
         {
             return null;
         }
-    }
-
-    private String getPatternByArray(float[] array)
-    {
-    	for(float[] val : arrayToPattern.keySet() )
-    	{
-    		if( Arrays.equals(val, array) )
-    			return arrayToPattern.get(val);
-    	}
-    	return "~";
-    }
-
-    private float[] getArrayByPattern(String pattern)
-    {
-        return patternToArray.getOrDefault(pattern, SOLID);
     }
 
     ///////////////////////////////////////////////////////////////////////////
