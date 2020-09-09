@@ -36,6 +36,13 @@ public interface ViewEditorHelper
     public Dimension resizeView(View view, Dimension size);
 
     /**
+     * Should provides necessary changes in view and model if the view can be resized and moved by specified offset.
+     *
+     * @returns new view size.
+     */
+    public Dimension resizeView(View view, Dimension size, Dimension offset);
+
+    /**
      * Should provides necessary changes in view and model if the view can be resized.
      *
      * @returns view for the specified object.

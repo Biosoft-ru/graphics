@@ -255,9 +255,10 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
         // some resizing require moving
         if( offset != null )
         {
-            helper.moveView(view, offset);
+            helper.resizeView(view, size, offset);
         }
-        helper.resizeView(view, size);
+        else
+            helper.resizeView(view, size);
 
         completeTransaction();
     }
@@ -927,7 +928,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
         Rectangle curRect = new Rectangle(point.x - ArrowView.DELTA - pathOffset.x, point.y - ArrowView.DELTA - pathOffset.y,
                 2 * ArrowView.DELTA, 2 * ArrowView.DELTA);
         SimplePath path = ( (ArrowView)view ).getPath();
-        for( int i = 1; i < path.npoints - 1; i++ )
+        for( int i = 0; i < path.npoints; i++ )
         {
             if( curRect.contains(path.xpoints[i], path.ypoints[i]) )
             {

@@ -117,5 +117,12 @@ public class DefaultViewEditorHelper implements ViewEditorHelper
     {
         return false;
     }
-    
+
+    @Override
+    public Dimension resizeView(View view, Dimension size, Dimension offset)
+    {
+        moveView( view, offset );
+        return resizeView( view, size );
+    }
+
 }
