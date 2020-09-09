@@ -27,15 +27,15 @@ public class PathSelector implements ViewSelector
 
         SimplePath path = ( (ArrowView)view ).getPath();
         Point pathOffset = ( (ArrowView)view ).getPathOffset();
-        createSelectedPoint(new Pen(1.0f, Color.black), new Brush(Color.black), path, 0, pathOffset).paint(g);
-        for( int i = 1; i < path.npoints - 1; i++ )
+        //createSelectedPoint(new Pen(1.0f, Color.black), new Brush(Color.black), path, 0, pathOffset).paint(g);
+        for( int i = 0; i < path.npoints; i++ )
         {
             View controlPoint = createSelectedPoint(new Pen(1.0f, Color.red), new Brush(Color.red), path, i, pathOffset);
             controlPoint.setModel(view.getModel());
             controlPoint.setActive(true);
             controlPoint.paint(g);
         }
-        createSelectedPoint(new Pen(1.0f, Color.black), new Brush(Color.black), path, path.npoints - 1, pathOffset).paint(g);
+        //createSelectedPoint(new Pen(1.0f, Color.black), new Brush(Color.black), path, path.npoints - 1, pathOffset).paint(g);
     }
 
     protected View createSelectedPoint(Pen pen, Brush brush, SimplePath path, int pos, Point pathOffset)
