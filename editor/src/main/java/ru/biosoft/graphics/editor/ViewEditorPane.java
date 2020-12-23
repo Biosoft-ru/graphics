@@ -26,6 +26,10 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
+import com.developmentontheedge.beans.undo.Transactable;
+import com.developmentontheedge.beans.undo.TransactionEvent;
+import com.developmentontheedge.beans.undo.TransactionListener;
+
 import ru.biosoft.graphics.ArrowView;
 import ru.biosoft.graphics.BoxView;
 import ru.biosoft.graphics.CompositeView;
@@ -33,10 +37,6 @@ import ru.biosoft.graphics.PathUtils;
 import ru.biosoft.graphics.Pen;
 import ru.biosoft.graphics.SimplePath;
 import ru.biosoft.graphics.View;
-
-import com.developmentontheedge.beans.undo.Transactable;
-import com.developmentontheedge.beans.undo.TransactionEvent;
-import com.developmentontheedge.beans.undo.TransactionListener;
 
 
 /**
@@ -74,7 +74,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
 
         setSelectionManager(new RectangleSelectionManager(this, helper));
     }
-    
+
     public ViewEditorHelper getHelper()
     {
         return helper;
@@ -168,7 +168,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     {
         move(offset, false);
     }
-    
+
     /** Move all selected entities to the specified offset*/
     synchronized public void move(Dimension offset, boolean moveOnlyEdges)
     {
@@ -189,7 +189,13 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
                             initialRect.height);
                     View cpView = new BoxView(null, null, boxRectangle);
                     cpView.setModel(view.getModel());
-                    helper.moveView(cpView, offset);
+                    try
+                    {
+                        helper.moveView(cpView, offset);
+                    }
+                    catch( Exception e )
+                    {
+                    }
 
                     if( initialRect2 != null )
                     {
@@ -197,12 +203,24 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
                                 initialRect2.height);
                         cpView = new BoxView(null, null, boxRectangle);
                         cpView.setModel(view.getModel());
-                        helper.moveView(cpView, offset);
+                        try
+                        {
+                            helper.moveView(cpView, offset);
+                        }
+                        catch( Exception e )
+                        {
+                        }
                     }
                 }
                 else if (!moveOnlyEdges)
                 {
-                    helper.moveView(view, offset);
+                    try
+                    {
+                        helper.moveView(view, offset);
+                    }
+                    catch( Exception e )
+                    {
+                    }
                 }
             }
         }
@@ -231,7 +249,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     	String selectionName = String.join(", ", names);
     	return selectionName;
     }
-    
+
     protected static String getName(Object obj)
     {
     	String name = null;
@@ -242,7 +260,7 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     	catch( Exception t )
     	{
         }
-    	return name == null ? obj.toString() : name; 
+    	return name == null ? obj.toString() : name;
     }
 
     /** Change size for the selected (one) entity. */
@@ -253,13 +271,18 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
         View view = selectionManager.getSelectedView(0);
 
         // some resizing require moving
-        if( offset != null )
+        try
         {
-            helper.resizeView(view, size, offset);
+            if(offset != null)
+            {
+                helper.resizeView(view, size, offset);
+            }
+            else
+                helper.resizeView(view, size);
         }
-        else
-            helper.resizeView(view, size);
-
+        catch(Exception e)
+        {
+        }
         completeTransaction();
     }
 
@@ -725,16 +748,22 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
                         }
                     }
                 }
-                
+
                 selection.move(point);
 
                 if( helper.drawOnFly() )
                 {
                     for( View v : selection )
                         if (v.getModel() != null)
-                        helper.moveView(v, new Dimension(point.x, point.y));
+                            try
+                            {
+                                helper.moveView(v, new Dimension(point.x, point.y));
+                            }
+                            catch( Exception e1 )
+                            {
+                            }
                 }
-                
+
                 prevCorrectedPoint = pt;
                 repaint();
                 initiated = true;

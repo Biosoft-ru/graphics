@@ -30,7 +30,7 @@ public class DefaultViewEditorHelper implements ViewEditorHelper
      * @returns shift on which the view was moved.
      */
     @Override
-    public Dimension moveView ( View view, Dimension offset )
+    public Dimension moveView ( View view, Dimension offset ) throws Exception
     {
         view.move ( new Point ( offset.width, offset.height ) );
         // viewEditorPane.repaint();
@@ -45,7 +45,7 @@ public class DefaultViewEditorHelper implements ViewEditorHelper
      * @returns new view size.
      */
     @Override
-    public Dimension resizeView ( View view, Dimension size )
+    public Dimension resizeView ( View view, Dimension size ) throws Exception
     {
         Rectangle initialSize = view.getBounds ( );
         float scaleX = ( ( float ) initialSize.width + size.width )
@@ -119,7 +119,7 @@ public class DefaultViewEditorHelper implements ViewEditorHelper
     }
 
     @Override
-    public Dimension resizeView(View view, Dimension size, Dimension offset)
+    public Dimension resizeView(View view, Dimension size, Dimension offset) throws Exception
     {
         moveView( view, offset );
         return resizeView( view, size );

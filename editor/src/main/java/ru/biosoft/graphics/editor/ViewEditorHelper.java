@@ -26,21 +26,21 @@ public interface ViewEditorHelper
      *
      * @returns shift on which the view was moved.
      */
-    public Dimension moveView(View view, Dimension offset);
+    public Dimension moveView(View view, Dimension offset) throws Exception;
 
     /**
      * Should provides necessary changes in view and model if the view can be resized.
      *
      * @returns new view size.
      */
-    public Dimension resizeView(View view, Dimension size);
+    public Dimension resizeView(View view, Dimension size) throws Exception;
 
     /**
      * Should provides necessary changes in view and model if the view can be resized and moved by specified offset.
      *
      * @returns new view size.
      */
-    public Dimension resizeView(View view, Dimension size, Dimension offset);
+    public Dimension resizeView(View view, Dimension size, Dimension offset) throws Exception;
 
     /**
      * Should provides necessary changes in view and model if the view can be resized.
