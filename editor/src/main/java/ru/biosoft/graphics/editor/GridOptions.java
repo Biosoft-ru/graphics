@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import com.developmentontheedge.beans.DynamicProperty;
 import com.developmentontheedge.beans.Option;
 import com.developmentontheedge.beans.Preferences;
-import com.developmentontheedge.beans.WeakPropertyChangeForwarder;
 
 public class GridOptions extends Option implements PropertyChangeListener
 {
@@ -102,35 +101,6 @@ public class GridOptions extends Option implements PropertyChangeListener
     {
         boolean oldValue = this.useDefault;
         this.useDefault = useDefault;
-
-        Preferences preferences = (Preferences) sun.awt.AppContext.getAppContext().get(Preferences.class);
-        if( preferences != null )
-        {
-            Preferences defaultInstance = (Preferences)preferences.getValue(GRID_OPTIONS);
-
-            if( useDefault == false && defaultInstance != null )
-                defaultInstance.removePropertyChangeListener(this);
-
-            if( useDefault == true )
-            {
-                if( defaultInstance == null )
-                {
-                    try
-                    {
-                        GridOptionsMessageBundle messageBundle = new GridOptionsMessageBundle();
-                        preferences.add(new DynamicProperty(GRID_OPTIONS, messageBundle.getString("DISPLAY_NAME"), messageBundle
-                                .getString("SHORT_DESCRIPTION"), Preferences.class, getAsPreferences()));
-                        defaultInstance = (Preferences)preferences.getValue(GRID_OPTIONS);
-                    }
-                    catch( Exception e )
-                    {
-                    	logger.log(Level.WARNING, "Can not create grid properties", e);
-                    }
-                }
-                if(defaultInstance != null)
-                    new WeakPropertyChangeForwarder(this, defaultInstance);
-            }
-        }
         json = null;
         firePropertyChange("useDefault", oldValue, useDefault);
     }

@@ -70,6 +70,13 @@ public class ViewPane extends JPanel implements MouseListener, MouseMotionListen
 
     public ViewPane()
     {
+        initUIComponents();
+        // set up empty composite view
+        cView = new CompositeView();
+    }
+
+    protected void initUIComponents()
+    {
         mPanel = new MPanel(true);
 
         // scroll pane issues
@@ -96,8 +103,6 @@ public class ViewPane extends JPanel implements MouseListener, MouseMotionListen
 
         setSelectionManager(selectionManager);
 
-        // set up empty composite view
-        cView = new CompositeView();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -339,6 +344,10 @@ public class ViewPane extends JPanel implements MouseListener, MouseMotionListen
     {
         if( cView == null )
             return;
+
+        if ( mPanel == null )
+            return;
+
         Rectangle r = cView.getBounds();
 
         Dimension dm = new Dimension((int) ( ( r.width + 4 ) * at.getScaleX() ), (int) ( ( r.height + 4 ) * at.getScaleY() ));

@@ -2,11 +2,11 @@ package ru.biosoft.graphics.editor;
 
 
 /**
- * The listener interface for receiving "interesting" mouse events (press, release, click,
- * enter, and exit) on a view pane.
+ * The listener interface for receiving "interesting" mouse events (press,
+ * release, click, enter, and exit) on a view pane.
  *
- * @see <{MouseListener}>
- * @see <{ru.biosoft.graphics.editor.ViewPaneEvent}>
+ * @see MouseListener
+ * @see ru.biosoft.graphics.editor.ViewPaneEvent
  */
 public interface ViewPaneListener
 {

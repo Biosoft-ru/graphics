@@ -52,9 +52,9 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     ViewEditorHelper helper;
     ActionListener insertActionListener;
     Object insertMode;
-    ButtonGroup bg = new ButtonGroup();
+    ButtonGroup bg;
     JToggleButton selectbutton;
-    JToolBar toolbar = new JToolBar(JToolBar.HORIZONTAL);
+    JToolBar toolbar;
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructor
@@ -63,16 +63,26 @@ public class ViewEditorPane extends ViewPane implements Transactable, Transactio
     public ViewEditorPane(ViewEditorHelper helper)
     {
         super();
-
         this.helper = helper;
         helper.register(this);
-        fillToolbar(helper);
-        toolbar.setRollover( true );
-        add(toolbar, BorderLayout.NORTH);
-        addKeyListener(this);
-        selectionEnabled = true;
+        initUIComponents();
+    }
 
-        setSelectionManager(new RectangleSelectionManager(this, helper));
+    @Override
+    protected void initUIComponents()
+    {
+        super.initUIComponents();
+        bg = new ButtonGroup();
+        toolbar = new JToolBar(JToolBar.HORIZONTAL);
+        if ( helper != null )
+        {
+            fillToolbar(helper);
+            toolbar.setRollover(true);
+            add(toolbar, BorderLayout.NORTH);
+            addKeyListener(this);
+            selectionEnabled = true;
+            setSelectionManager(new RectangleSelectionManager(this, helper));
+        }
     }
 
     public ViewEditorHelper getHelper()
