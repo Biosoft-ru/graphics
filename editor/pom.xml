@@ -9,6 +9,27 @@
 
  <name>View editor</name>
  <description>View pane to view and edit CompositeView.</description>
+  <url>https://github.com/Biosoft-ru/graphics</url>
+
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License (AGPL) version 3.0</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <organization>Biosoft.Ru LLC</organization>
+            <organizationUrl>https://github.com/Biosoft-ru</organizationUrl>
+        </developer>
+    </developers>
+
+  <scm>
+      <connection>scm:git:git://github.com/Biosoft-ru/graphics.git</connection>
+      <developerConnection>scm:git:ssh://github.com/Biosoft-ru/graphics.git</developerConnection>
+      <url>https://github.com/Biosoft-ru/graphics</url>
+  </scm>
 
  <parent>
   <groupId>ru.biosoft</groupId>
